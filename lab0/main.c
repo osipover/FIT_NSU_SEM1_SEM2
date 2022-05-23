@@ -12,6 +12,7 @@ int CheckForB2(int b2){
     else return 1;
 }
 
+
 int CheckPoint(char* x){
     int lenstr = strlen(x);
     int SumPoint = 0;
@@ -47,14 +48,14 @@ int CheckElements(char* x, int b1){
         }
         else if (('a' <= x[i]) && (x[i] <= 'f')){
             if ((x[i] - 'a' + 10) >= b1) return 0;
-            x[i] = x[i] - 32; //перезаписать прописные буквы на заглавные
+            x[i] = x[i] - 32; //ГЇГҐГ°ГҐГ§Г ГЇГЁГ±Г ГІГј ГЇГ°Г®ГЇГЁГ±Г­Г»ГҐ ГЎГіГЄГўГ» Г­Г  Г§Г ГЈГ«Г ГўГ­Г»ГҐ
         }
         else if ((x[i] > 'F') || (x[i] > 'f')) return 0;
     }
     return 1;
 }
 
-int Check(char* x, int b1, int b2){ //проверка x на b1
+int Check(char* x, int b1, int b2){ //ГЇГ°Г®ГўГҐГ°ГЄГ  x Г­Г  b1
     if ((CheckForB1(b1) == 0) || (CheckForB2(b2) == 0)) return 0;
     CheckPoint(x);
     if (Rubbish(x) == 0) return 0;
