@@ -1,38 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int** CreateMatrix(int rows, int columns) {
-	int** matrix = malloc(sizeof(int*) * rows);
-	for (int i = 0; i < rows; ++i)
-		matrix[i] = malloc(sizeof(int) * columns);
+int** CreateMatrix(int N, int M) {
+	int** matrix = malloc(sizeof(int*) * N);
+	for (int i = 0; i < N; ++i)
+		matrix[i] = (int*)malloc(sizeof(int) * M);
 	return matrix;
 }
 
-void FillMatrix(int** matrix, int rows, int columns) {
-	for (int i = 0; i < rows; ++i) {
-		for (int j = 0; j < columns; ++j) {
+void FillMatrix(int** matrix, int N, int M) {
+	for (int i = 0; i < N; ++i) {
+		for (int j = 0; j < M; ++j) {
 			if (scanf("%d", &matrix[i][j]) != 1)
 				return;
 		}
 	}
 }
 
-int SumElements(int** matrix, int rows, int columns) {
+int SumElements(int** matrix, int N, int M) {
 	int sum = 0;
-	for (int i = 0; i < rows; ++i) {
-		for (int j = 0; j < columns; ++j)
+	for (int i = 0; i < N; ++i) {
+		for (int j = 0; j < M; ++j)
 			sum += matrix[i][j];
 	}
 	return sum;
 }
 
 int main() {
-	int rows = 3, columns = 4;
+	int N = 3, M = 4;
 
-	int** matrix = CreateMatrix(rows, columns);
-	FillMatrix(matrix, rows, columns);
+	int** matrix = CreateMatrix(N, M);
+	FillMatrix(matrix, N, M);
 
-	int sum = SumElements(matrix, rows, columns);
+	int sum = SumElements(matrix, N, M);
 
 	printf("%d", sum);
 	
