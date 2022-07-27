@@ -50,7 +50,7 @@ int main() {
 	int size = sizeof(array) / sizeof(unsigned char);
 
 	ReverseBits(array, size);
-//f
+	
 	PrintArray(array, size);
 	
 	return 0;
