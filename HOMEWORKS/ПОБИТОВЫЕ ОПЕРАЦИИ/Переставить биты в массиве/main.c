@@ -52,4 +52,6 @@ int main() {
 	ReverseBits(array, size);
 
 	PrintArray(array, size);
+	
+	return 0;
 }
