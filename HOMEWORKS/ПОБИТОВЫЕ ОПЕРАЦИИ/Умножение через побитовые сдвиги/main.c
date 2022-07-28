@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <assert.h>
 
+enum WORK_RESULT {
+	SUCCESS = 0,
+	FAILURE = 1
+};
+
 void GenerateMultByConst(unsigned int multiplier) {
 	static int position = 0;
 
@@ -35,4 +40,5 @@ int main() {
 	unsigned int multiplier;
 	assert(scanf("%u", &multiplier) == 1);
 	GenerateMultByConst(multiplier);
+	return SUCCESS;
 }
