@@ -49,6 +49,7 @@ int main() {
 	
 	float area = CalcAreaByGauss(tops, N);
 	printf("%f", area);
-
+	
+	free(tops);
 	return SUCCESS;
 }
