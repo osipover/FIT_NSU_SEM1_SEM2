@@ -32,28 +32,15 @@ void AdvanceTime(TTime* time, int n) {
 	time->min %= 60;
 }
 
-void PrintTime(TTime time) {
-	if (time.hours < 10)
-		printf("0%d:", time.hours);
-	else
-		printf("%d:", time.hours);
-
-	if (time.min < 10)
-		printf("0%d:", time.min);
-	else
-		printf("%d:", time.min);
-
-	if (time.sec < 10)
-		printf("0%d", time.sec);
-	else
-		printf("%d", time.sec);
+void PrintTime(TTime* time) {
+	printf("%02d:%02d:%02d", time->hours, time->min, time->sec);
 }
 
 int main() {
-	TTime time = { 0, 0, 1 };
+	TTime time = { 13, 58, 32 };
 	int n;
 	assert(scanf("%d", &n) == 1);
 	AdvanceTime(&time, n);
-	PrintTime(time);
+	PrintTime(&time);
 	return SUCCESS;
 }
