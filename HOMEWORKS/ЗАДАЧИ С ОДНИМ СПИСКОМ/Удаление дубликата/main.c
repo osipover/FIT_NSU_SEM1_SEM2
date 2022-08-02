@@ -48,7 +48,7 @@ TList* ConvertListFromArray(int* array, int size) {
 	return list;
 }
 
-void DeleteNextNode(TList** prev) {
+void DeleteDublicate(TList** prev) {
 	TList* dubl = (*prev)->next;
 	(*prev)->next = dubl->next;
 	free(dubl);
@@ -62,7 +62,7 @@ void RemoveDublicates(TList** list) {
 
 	while (!IsListEmpty(tmp) && !IsListEmpty(tmp->next)) {
 		if (tmp->value == (tmp->next)->value)
-			DeleteNextNode(&tmp);
+			DeleteDublicate(&tmp);
 		else
 			tmp = tmp->next;
 	}
