@@ -45,7 +45,7 @@ TList* ConvertListFromArray(int* array, int size) {
 	return list;
 }
 
-TList* getNth(TList* list, int n) {
+TList* GetNth(TList* list, int n) {
 	if (!IsListEmpty(list)) {
 		int counter = 0;
 		while ((counter < n) && (!IsListEmpty(list->next))) {
@@ -67,7 +67,7 @@ void DeleteNth(TList** list, int n) {
 			return;
 		}
 
-		TList* prev = getNth(*list, n-1);
+		TList* prev = GetNth(*list, n-1);
 		delNode = prev->next;
 		prev->next = delNode->next;
 		free(delNode);
