@@ -1,9 +1,18 @@
 #include <stdio.h>
+#include <assert.h>
+
+enum WORK_RESULT {
+	SUCCESS = 0,
+	FAILURE = 1
+};
+
+int abs(int n) {
+	return (n < 0) ? n * (-1) : n;
+}
 
 int SumNum(int n) {
 	int sum = 0;
-	if (n < 0)
-		n *= -1;
+	n = abs(n);
 	while (n > 0) {
 		sum += n % 10;
 		n /= 10;
@@ -13,8 +22,8 @@ int SumNum(int n) {
 
 int main() {
 	int n;
-	if (scanf("%d", &n) != 1)
-		return 1;
+	assert(scanf("%d", &n) != 1);
 	printf("%d", SumNum(n));
-	return 0;
+
+	return SUCCESS;
 }
