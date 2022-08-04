@@ -56,7 +56,7 @@ void PushBack(TList* node, TList** list) {
 void FreeList(TList** list) {
 	while (!IsListEmpty(*list)) {
 		TList* tmp = *list;
-		(*list) = tmp->next;
+		*list = tmp->next;
 		free(tmp);
 	}
 }
