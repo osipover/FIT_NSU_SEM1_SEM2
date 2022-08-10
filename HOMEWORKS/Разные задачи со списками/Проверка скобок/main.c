@@ -102,7 +102,7 @@ void CheckBrackets(TList** list) {
 		else {
 			if (IsListEmpty(stack) || !IsMatch(Pop(&stack), bracket)) {
 				printf("not OK");
-				FreeList(list);
+				FreeList(&stack);
 				return;
 			}
 		}
@@ -123,12 +123,10 @@ TList* ConvertStringToList(char* string, int length) {
 }
 
 int main() {
-	char* string = "((){[]}}";
+	char* string = "((})))))";
 	int length = strlen(string);
-
 	TList* list = ConvertStringToList(string, length);
-	
 	CheckBrackets(&list);
-	
+	FreeList(&list);
 	return SUCCESS;
 }
