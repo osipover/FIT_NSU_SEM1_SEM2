@@ -16,22 +16,48 @@ typedef struct TList {
 	struct TList* next;
 }TList;
 
-void PushList(TValue value, TList** list) {
+bool IsListEmpty(TList* list) {
+	if (list == NULL)
+		return true;
+	else
+		return false;
+}
+
+TList* CreateItem(TValue value, TList* list) {
 	TList* new = malloc(sizeof(TList));
 	assert(new != NULL);
-	new->next = NULL;
 	new->value = value;
+	new->next = list;
+	return new;
+}
 
-	if (*list == NULL) {
+void PushList(TValue value, TList** list) {
+	TList* new = CreateItem(value, NULL);
+
+	if (*list == NULL)
 		*list = new;
-		return;
+	else {
+		TList* tmp = *list;
+		while (tmp->next != NULL)
+			tmp = tmp->next;
+		tmp->next = new;
 	}
+}
 
-	TList* tmp = *list;
-	while (tmp->next != NULL)
-		tmp = tmp->next;
-	
-	tmp->next = new;
+void PrintList(TList* list) {
+	while (!IsListEmpty(list)) {
+		printf("%d ", list->value);
+		list = list->next;
+	}
+	printf("\n");
+}
+
+void FreeList(TList** node) {
+	while (!IsListEmpty(*node)) {
+		TList* tmp = *node;
+		*node = (*node)->next;
+		free(tmp);
+	}
 }
 
 bool IsDigit(char symbol) {
@@ -47,42 +73,6 @@ bool IsOperator(int symbol) {
 	else
 		return false;
 }
-
-TList* ConvertStringToList(char* string, int length) {
-	TList* postfix = NULL;
-
-	int digit = 0;
-	for (int i = 0; i <= length; ++i) {
-		if (IsDigit(string[i])) {
-			while (IsDigit(string[i])) {
-				digit = digit * 10 + string[i] - '0';
-				++i;
-			}
-			PushList(digit, &postfix);
-			digit = 0;
-		}
-		if (IsOperator((int)string[i]))
-			PushList((int)string[i], &postfix);
-	}
-
-	return postfix;
-}
-
-bool IsListEmpty(TList* list) {
-	if (list == NULL)
-		return true;
-	else
-		return false;
-}
-
-void PrintList(TList* list) {
-	while (!IsListEmpty(list)) {
-		printf("%d ", list->value);
-		list = list->next;
-	}
-	printf("\n");
-}
-
 bool IsNumber(int symbol) {
 	if (!IsOperator(symbol))
 		return true;
@@ -91,10 +81,8 @@ bool IsNumber(int symbol) {
 }
 
 void PushStack(TValue value, TList** stack) {
-	TList* node = malloc(sizeof(TList));
-	node->value = value;
-	node->next = *stack;
-	*stack = node;
+	TList* newNode = CreateItem(value, *stack);
+	*stack = newNode;
 }
 
 int PopStack(TList** stack) {
@@ -107,15 +95,15 @@ int PopStack(TList** stack) {
 
 int GetResultOfOperation(int a, int b, char operator) {
 	switch (operator) {
-		case '+':
-			return a + b;
-		case '-':
-			return a - b;
-		case '*':
-			return a * b;
-		case '/':
-			assert(b != 0);
-			return a / b;
+	case '+':
+		return a + b;
+	case '-':
+		return a - b;
+	case '*':
+		return a * b;
+	case '/':
+		assert(b != 0);
+		return a / b;
 	}
 }
 
@@ -138,12 +126,27 @@ int CalcPostfix(TList* postfix) {
 	assert(IsListEmpty(stack));
 	return answer;
 }
-void FreeList(TList** node) {
-	while (!IsListEmpty(*node)) {
-		TList* tmp = *node;
-		*node = (*node)->next;
-		free(tmp);
+
+
+
+TList* ConvertStringToList(char* string, int length) {
+	TList* postfix = NULL;
+
+	int digit = 0;
+	for (int i = 0; i <= length; ++i) {
+		if (IsDigit(string[i])) {
+			while (IsDigit(string[i])) {
+				digit = digit * 10 + string[i] - '0';
+				++i;
+			}
+			PushList(digit, &postfix);
+			digit = 0;
+		}
+		if (IsOperator((int)string[i]))
+			PushList((int)string[i], &postfix);
 	}
+
+	return postfix;
 }
 
 int main() {
