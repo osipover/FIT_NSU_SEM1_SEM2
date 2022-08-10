@@ -114,7 +114,7 @@ int CalcPrefix(TList** prefix) {
 }
 
 TList* ConvertStringToList(char* string, int length) {
-	TList* postfix = NULL;
+	TList* prefix = NULL;
 
 	int digit = 0;
 	for (int i = 0; i <= length; ++i) {
@@ -123,14 +123,14 @@ TList* ConvertStringToList(char* string, int length) {
 				digit = digit * 10 + string[i] - '0';
 				++i;
 			}
-			PushList(digit, &postfix);
+			PushList(digit, &prefix);
 			digit = 0;
 		}
 		if (IsOperator((int)string[i]))
-			PushList((int)string[i], &postfix);
+			PushList((int)string[i], &prefix);
 	}
 
-	return postfix;
+	return prefix;
 }
 
 int main() {
