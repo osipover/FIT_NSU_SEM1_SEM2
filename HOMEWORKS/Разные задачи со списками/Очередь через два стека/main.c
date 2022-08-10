@@ -10,15 +10,22 @@ enum WORK_RESULT {
 
 typedef int TValue;
 
-typedef struct TStack {
+typedef struct TList {
 	TValue value;
-	struct TStack* next;
-}TStack;
+	struct TList* next;
+}TList;
 
 typedef struct TQueue {
-	TStack* forEnq;
-	TStack* forDeq;
+	TList* forEnq;
+	TList* forDeq;
 }TQueue;
+
+bool IsListEmpty(TList* stack) {
+	if (stack == NULL)
+		return true;
+	else
+		return false;
+}
 
 TQueue* CreateQueue() {
 	TQueue* queue = malloc(sizeof(TQueue));
@@ -28,64 +35,55 @@ TQueue* CreateQueue() {
 	return queue;
 }
 
-bool IsStackEmpty(TStack* stack) {
-	if (stack == NULL)
-		return true;
-	else
-		return false;
+TList* CreateItem(TValue value, TList* list) {
+	TList* newNode = malloc(sizeof(TList));
+	assert(newNode != NULL);
+	newNode->value = value;
+	newNode->next = list;
+	return newNode;
 }
 
-void Enqueue(TValue value, TQueue* queue) {
-	TStack* node = malloc(sizeof(TStack));
-	assert(node != NULL);
-	node->value = value;
-	node->next = queue->forEnq;
-	queue->forEnq = node;
-}
-
-void Push(TValue value, TStack** stack) {
-	TStack* node = malloc(sizeof(TStack));
-	node->value = value;
-	node->next = *stack;
+void PushStack(TValue value, TList** stack) {
+	TList* node = CreateItem(value, *stack);
 	*stack = node;
 }
 
-TValue Pop(TStack** stack) {
+TValue PopStack(TList** stack) {
 	TValue value = (*stack)->value;
-	TStack* tmp = *stack;
+	TList* tmp = *stack;
 	*stack = (*stack)->next;
 	free(tmp);
 	return value;
 }
 
-void PutForenqToFordeq(TQueue* queue) {
+void MoveForenqToFordeq(TQueue* queue) {
 	TValue value;
-	while (!IsStackEmpty(queue->forEnq)) {
-		value = Pop(&(queue->forEnq));
-		Push(value, &(queue->forDeq));
+	while (!IsListEmpty(queue->forEnq)) {
+		value = PopStack(&(queue->forEnq));
+		PushStack(value, &(queue->forDeq));
 	}
 }
 
+void Enqueue(TValue value, TQueue* queue) {
+	TList* node = CreateItem(value, queue->forEnq);
+	queue->forEnq = node;
+}
+
 TValue Dequeue(TQueue* queue) {
-	if (IsStackEmpty(queue->forDeq))
-		PutForenqToFordeq(queue);
-	TValue value = Pop(&(queue->forDeq));
+	if (IsListEmpty(queue->forDeq))
+		MoveForenqToFordeq(queue);
+	TValue value = PopStack(&(queue->forDeq));
 	return value;
 }
 
-void ConvertArrayToQueue(int* array, int size, TQueue* queue) {
-	for (int i = 0; i < size; ++i)
-		Enqueue(array[i], queue);
-}
-
-void PrintForDeq(TStack* list) {
-	while (!IsStackEmpty(list)) {
+void PrintForDeq(TList* list) {
+	while (!IsListEmpty(list)) {
 		printf("%d ", list->value);
 		list = list->next;
 	}
 }
 
-void PrintForEnq(TStack* forEnq) {
+void PrintForEnq(TList* forEnq) {
 	if (forEnq == NULL)
 		return;
 	PrintForEnq(forEnq->next);
@@ -95,13 +93,13 @@ void PrintForEnq(TStack* forEnq) {
 void PrintQueue(TQueue* queue) {
 	PrintForDeq(queue->forDeq);
 	PrintForEnq(queue->forEnq);
-	
+
 	printf("\n");
 }
 
-void FreeStack(TStack** node) {
-	while (!IsStackEmpty(*node)) {
-		TStack* tmp = *node;
+void FreeStack(TList** node) {
+	while (!IsListEmpty(*node)) {
+		TList* tmp = *node;
 		*node = (*node)->next;
 		free(tmp);
 	}
@@ -112,22 +110,29 @@ void FreeQueue(TQueue* queue) {
 	FreeStack(&(queue->forDeq));
 }
 
+void ConvertArrayToQueue(int* array, int size, TQueue* queue) {
+	for (int i = 0; i < size; ++i)
+		Enqueue(array[i], queue);
+}
+
 void BuildTest(TQueue* queue) {
+	printf("Queue: ");
+	PrintQueue(queue);
+	
+	printf("Dequeue: %d\nQueue: ", Dequeue(queue));
 	PrintQueue(queue);
 
-	TValue x = Dequeue(queue);
+	printf("Enqueue: 6\nEnqueue: 7\nQueue: ");
 	Enqueue(6, queue);
 	Enqueue(7, queue);
-
 	PrintQueue(queue);
 
-	x = Dequeue(queue);
-
+	printf("Dequeue: %d\nQueue: ", Dequeue(queue));
 	PrintQueue(queue);
 }
 
 int main() {
-	int array[] = {1, 2, 3, 4, 5};
+	int array[] = { 1, 2, 3, 4, 5 };
 	int sizeOfArray = sizeof(array) / sizeof(int);
 
 	TQueue* queue = CreateQueue();
@@ -136,6 +141,6 @@ int main() {
 	BuildTest(queue);
 
 	FreeQueue(queue);
-	
+
 	return SUCCESS;
 }
