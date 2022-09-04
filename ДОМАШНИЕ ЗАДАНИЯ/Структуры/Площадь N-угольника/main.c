@@ -32,7 +32,7 @@ float CalcAreaByGauss(TPoint2D* tops, int N) {
 	float area = 0;
 	for (int i = 0; i < N - 1; ++i) {
 		area += (tops[i].x) * (tops[i + 1].y);
-		area -= (tops[i+1].x) * (tops[i].y);
+		area -= (tops[i + 1].x) * (tops[i].y);
 	}
 	area += (tops[N - 1].x) * (tops[0].y);
 	area -= (tops[0].x) * (tops[N - 1].y);
@@ -46,10 +46,10 @@ int main() {
 	assert((scanf("%d", &N) == 1) && (N > 0));
 
 	TPoint2D* tops = CreateArrayOfTops(N);
-	
+
 	float area = CalcAreaByGauss(tops, N);
 	printf("%f", area);
-	
+
 	free(tops);
 	return SUCCESS;
 }
