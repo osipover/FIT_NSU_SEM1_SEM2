@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int Factorial(int n) {
+int CalcFactorial(int n) {
 	int fact = 1;
 	while (n > 1) {
 		fact *= n;
@@ -11,8 +11,7 @@ int Factorial(int n) {
 
 int main(){
   int n;
-  if (scanf("%d", &n) != 1)
-    return 1;
-  printf("%d", Factorial(n));
+  assert(scanf("%d", &n) == 1);
+  printf("%d", CalcFactorial(n));
   return 0;
 }
